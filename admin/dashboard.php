@@ -538,6 +538,7 @@ table tr:hover td{
                 <th>Perangkat</th>
                 <th>Jumlah</th>
                 <th>Tanggal Booking</th>
+                <th>Jam Booking</th>
 
             </tr>
 
@@ -564,7 +565,9 @@ table tr:hover td{
                 <td>
                     <?= $b['tanggal']; ?>
                 </td>
-
+                <td>
+                    <?= $b['jam_booking']; ?>
+                </td>
             </tr>
 
             <?php } ?>
