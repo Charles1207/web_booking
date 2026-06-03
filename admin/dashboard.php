@@ -539,6 +539,7 @@ table tr:hover td{
                 <th>Jumlah</th>
                 <th>Tanggal Booking</th>
                 <th>Jam Booking</th>
+                <th>Status</th>
 
             </tr>
 
@@ -568,6 +569,11 @@ table tr:hover td{
                 <td>
                     <?= $b['jam_booking']; ?>
                 </td>
+                <td>
+                    <span class="badge <?= $b['status'] == 'dipinjam' ? 'badge-warning' : 'badge-success' ?>">
+                        <?= $b['status'] ?>
+                    </span>
+                </td>
             </tr>
 
             <?php } ?>
@@ -579,6 +585,7 @@ table tr:hover td{
     </div>
 
 </div>
+
 <!-- SWEETALERT -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

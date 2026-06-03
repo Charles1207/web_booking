@@ -14,7 +14,14 @@ include '../config/db.php';
 
 $query = mysqli_query($conn,
 "SELECT * FROM perangkat");
-
+$q = mysqli_query($conn,"
+SELECT b.*, p.nama_perangkat
+FROM bookings b
+JOIN perangkat p
+ON b.perangkat_id = p.id
+WHERE b.user_id='{$_SESSION['id']}'
+AND b.status='dipinjam'
+");
 ?>
 
 <!DOCTYPE html>
@@ -819,7 +826,146 @@ button:hover{
     box-shadow:
     0 10px 25px rgba(37,99,235,.25);
 }
+/* ==========================
+FORM PENGEMBALIAN
+========================== */
 
+form[action="kembalikan.php"]{
+    margin-top:20px;
+}
+
+form[action="kembalikan.php"] > div{
+
+    background:
+    rgba(255,255,255,.08);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:16px;
+
+    padding:16px 18px;
+
+    margin-bottom:12px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    transition:.25s ease;
+}
+
+form[action="kembalikan.php"] > div:hover{
+
+    background:
+    rgba(255,255,255,.12);
+
+    transform:translateY(-2px);
+}
+
+/* CHECKBOX */
+
+form[action="kembalikan.php"] input[type="checkbox"]{
+
+    width:20px;
+
+    height:20px;
+
+    cursor:pointer;
+
+    accent-color:#22c55e;
+}
+
+/* TEXT */
+
+form[action="kembalikan.php"] > div{
+
+    color:white;
+
+    font-size:15px;
+
+    font-weight:500;
+}
+
+/* BUTTON */
+
+form[action="kembalikan.php"] button{
+
+    margin-top:15px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #22c55e,
+        #16a34a
+    );
+
+    border:none;
+
+    border-radius:18px;
+
+    color:white;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.25s ease;
+}
+
+form[action="kembalikan.php"] button:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+    0 12px 25px rgba(34,197,94,.25);
+}
+.return-item{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:16px;
+
+    margin-bottom:12px;
+
+    border-radius:16px;
+
+    background:rgba(255,255,255,.08);
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+.return-item:hover{
+
+    background:rgba(255,255,255,.12);
+
+    transform:translateY(-2px);
+}
+
+.return-item input{
+
+    width:20px;
+
+    height:20px;
+
+    accent-color:#22c55e;
+}
+
+.return-item span{
+
+    color:white;
+
+    font-weight:500;
+}   
 </style>
 
 </head>
@@ -964,9 +1110,36 @@ button:hover{
             </button>
 
         </form>
+</div>
+<div>
+        <form action="kembalikan.php" method="POST">
 
+<?php while($row=mysqli_fetch_assoc($q)){ ?>
+
+<label class="return-item">
+
+    <input
+    type="checkbox"
+    name="booking_id[]"
+    value="<?= $row['id']; ?>">
+
+    <span>
+        <?= $row['nama_perangkat']; ?>
+        (<?= $row['jumlah']; ?>)
+    </span>
+
+</label>
+
+<?php } ?>
+
+<button type="submit">
+    Tandai Sudah Dikembalikan
+</button>
+
+</form>
     </div>
 
+</div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
